@@ -17,7 +17,13 @@ outer(`sayHello`)
 
 ```js
 // Your code goes here
-
+function delay(cb,ms){
+  return function(){
+    setTimeout(cb,ms);
+  }
+}
+let time = delay(()=>console.log(`I am`),1000)
+time();
 ```
 
 3. Write a function with a closure. The first function should only take one argument, someone's last name, and return the inner function. The returned `inner` function should take one more argument, someone's first name. When inner function when called it should console.log both the first name and the last name with a space.
@@ -79,16 +85,15 @@ storyOfMyLife.erase(); // ''
 When `forEach` function is called it returns another function. When the returned function is called it returns the element from the array at specific index. Every time you call the returned function the value of index should increment.
 
 ```js
-function forEach() {
+function forEach(arr) {
   // Your code goes here
-
-next.forEach(n=>{
-return n
-})  
-
+  let index =0
+return function(){
+  return arr[index++]
+}
 }
 
-let next = [1, 2, 3, 4, 5];
+let next = forEach([1, 2, 3, 4, 5]);
 next(); // 1
 next(); // 2
 next(); // 3
@@ -186,22 +191,15 @@ The returned function accepts a string (children) and returns the children with 
 ```js
 function createTag(n) {
   // your code goes here
-  let tag = document.createElement(n)
-  return{
-bold: function(text){
+  return function(text){
+let tag = document.createElement(n)
 tag.innerHTML=text
-return tag
-},
-italic: function(text){
-tag.innerHTML=text
-return tag
-}
-  }
+return tag}
 }
 
 let bold = createTag('b');
-bold.bold('Hello World!'); // <b>Hello World!</b>
+bold('Hello World!'); // <b>Hello World!</b>
 
 let italic = createTag('i');
-italic.italic('Hello World!'); // <i>Hello World!</i>
+italic('Hello World!'); // <i>Hello World!</i>
 ```
