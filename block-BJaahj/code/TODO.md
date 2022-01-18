@@ -4,13 +4,12 @@
 
 ```js
 function objOfMatches(array1, array2, callback) {
-  let obj={};
-  for(let i=0;i<array1.length;i++){
-    if(array1[i] !==array2[i]){
-    obj[array1[i]]=callback(array2[i])
+  return array1.reduce((acc,cv,index)=>{
+    if(array2[index]===callback(cv)){
+      acc[cv]=array2[index]
     }
-  }
-  return obj
+    return acc
+  },{})
 }
 
 // TEST
@@ -29,15 +28,12 @@ console.log(
 
 ```js
 function multiMap(arrVals, arrCallbacks) {
-  let obj={};
-  for(let i=0;i<arrVals.length;i++){
- obj[arrVals[i]]=  arrCallbacks.reduce((acc,cv)=>{
-acc.push(cv(arrVals[i]))
- return acc
-},[])
-
-  }
- return obj
+  return arrVals.reduce((acc,cv,index)=>{
+    acc[cv]= arrCallbacks.map((fn)=>{
+    return fn(cv)
+    })
+    return acc
+  },{})
 }
 
 // TEST
@@ -69,17 +65,13 @@ The final output from the third array will be matched agains the same indexed el
 
 ```js
 function objOfMatchesWithArray(array1, array2, callback) {
-  let obj={};
-  for(let i=0;i<array1.length;i++){
-if(array1[i]===array2[i].toLowerCase()){
-obj[array1[i]]=  callback.reduce((acc,cv)=>{
-acc.push(cv(array2[i]))
- return acc
-},[])
-
-  }
-}
- return obj
+  return array1.reduce((acc,cv,index)=>{
+   let val= callback.reduce((acc,fn)=>fn(acc),cv);
+   if(val=== array2[index]){
+     acc[cv]=array2[index]
+   }
+    return acc
+  },{})
 }
 
 // TEST
@@ -149,6 +141,7 @@ console.log(
 The function `schedule` will execute the function at first index after the value in value on first index in second array. i.e execute `sayHi` after `1` second and `sayHello` after `2` second.
 
 ```js
+
 
 function schedule(callArr,arr) {
   for(let i =0;i<callArr.length;i++){
