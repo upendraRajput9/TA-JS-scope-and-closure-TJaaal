@@ -75,7 +75,7 @@ let count =0
   return function (){
 count++
 if(count<=times)
-log(rest)
+log(...rest)
   }
 }
 
